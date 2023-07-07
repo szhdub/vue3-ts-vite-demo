@@ -3,3 +3,10 @@ import './style.css'
 import App from './App.vue'
 
 createApp(App).mount('#app')
+
+const fun = () =>
+{
+    console.log('fun')
+
+}
+fun();

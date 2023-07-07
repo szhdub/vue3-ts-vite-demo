@@ -1098,6 +1098,7 @@ defineProps({
 })
 </script>
 <style scoped></style>
+
 ```
 
 在 src 文件夹目录下创建一个 index.ts 文件：用于注册 components 文件夹内部全部全局组件！！！

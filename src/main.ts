@@ -7,6 +7,10 @@ import 'element-plus/dist/index.css';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'virtual:svg-icons-register'
 
+// 引入模板的全局样式
+import '@/styles/index.scss'
+
+import router from './router'
 
 const app = createApp(App)
 
@@ -16,7 +20,6 @@ app.use(ElementPlus, {
 
 app.use(ElementPlus);
 
-// 引入模板的全局样式
-import '@/styles/index.scss'
+app.use(router)
 
 app.mount('#app')

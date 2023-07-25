@@ -4,18 +4,18 @@ export interface loginForm {
 }
 
 export interface loginResponseData {
-  code: number,
+  code: number
   data: dataType
 }
 
 interface dataType {
-  token?: string,
+  token?: string
   message?: string
 }
 
 // 服务器返回类型
 export interface userResponseData {
-  code: number,
+  code: number
   data: user
 }
 
@@ -24,13 +24,13 @@ interface user {
 }
 
 interface userInfo {
-  userId: number,
-  avatar: String,
-  username: String,
-  password: String,
-  desc: String,
-  roles: String[],
-  buttons: String[],
-  routes: String[],
+  userId: number
+  avatar: String
+  username: String
+  password: String
+  desc: String
+  roles: String[]
+  buttons: String[]
+  routes: String[]
   token: String
 }

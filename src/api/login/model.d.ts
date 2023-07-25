@@ -1,11 +1,11 @@
 declare namespace API {
-    type CaptchaParams = {
-        width?: number;
-        height?: number;
-    }
+  type CaptchaParams = {
+    width?: number
+    height?: number
+  }
 
-    type CaptchaResult = {
-        img: string;
-        id: string;
-    }
+  type CaptchaResult = {
+    img: string
+    id: string
+  }
 }

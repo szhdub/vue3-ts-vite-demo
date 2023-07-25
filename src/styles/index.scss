@@ -1,2 +1,15 @@
 @import './reset.scss';
 
+
+//  滚动条外观
+::-webkit-scrollbar{
+    width: 5px;
+}
+::-webkit-scrollbar-track{
+    background: rgb(113, 248, 153);
+}
+::-webkit-scrollbar-thumb{
+    width: 5px;
+    background:rgb(24, 216, 56);
+    border-radius: 10px;
+}

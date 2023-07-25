@@ -3,16 +3,18 @@
     <el-row>
       <el-col :span="12" :xs="0"></el-col>
       <el-col :span="12" :xs="24">
-        <el-form class="login_form">
+        <el-form class="login_form" :model="loginForm" :rules="rules" ref="loginForms">
           <h1>登录</h1>
-          <el-form-item>
-            <el-input :prefix-icon="User" v-model="state.formInline.username"></el-input>
+          <el-form-item prop="username">
+            <el-input :prefix-icon="User" v-model="loginForm.username"></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input type="password" resize="both" :prefix-icon="Lock" v-model="loginForm.password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input type="password" resize="both" :prefix-icon="Lock" v-model="state.formInline.password"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" :loading="state.loading" plain @click="handleSubmit">登录</el-button>
+            <el-button type="primary" :loading="loading" plain @click="handleSubmit">
+              登录
+            </el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -20,20 +22,40 @@
   </div>
 </template>
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElNotification } from 'element-plus'
 import useUserStore from '@/store/modules/user'
 import { getImageCaptcha } from '@/api/login'
 
-const state = reactive({
-  loading: false,
-  formInline: { username: 'admin', password: '1' }
-});
+const loginForm = reactive({
+  username: 'admin', password: '1'
+})
+
+let loading = ref(false)
+let loginForms = ref();
 
 
-// const route = useRoute();
+//  自定义校验规则
+const validatorUserName = (rule: any, value: any, callback: any) => {
+  if (value.length >= 5) {
+    callback();
+  } else {
+    callback(new Error('帐号长度至少5位！'));
+  }
+}
+
+const rules = {
+  username: [
+    // { required: true, message: '用户名或密码不能为空！', trigger: 'change' },
+    { trigger: 'change', validator: validatorUserName }
+  ],
+  password: [
+    // { required: true, message: '用户名或密码不能为空！', trigger: 'change' },
+  ]
+}
+
 const router = useRouter()
 const useStore = useUserStore()
 
@@ -44,32 +66,34 @@ const useStore = useUserStore()
 // }
 
 const handleSubmit = async () => {
-  const { username, password } = state.formInline;
-  if(username.trim() == '' || password.trim() == ''){
+  await loginForms.value.validate()
+
+  const { username, password } = loginForm
+  if (username.trim() == '' || password.trim() == '') {
     ElNotification({
       type: 'warning',
-      message: '用户名或密码不能为空！'
+      message: '用户名或密码不能为空！',
     })
   }
-  state.loading = true;
+  loading.value = true
   try {
-    await useStore.userLogin(state.formInline);
+    await useStore.userLogin(loginForm)
     router.push('/')
     ElNotification({
       type: 'success',
       title: '登录成功！',
-      message: '欢迎进入！'
+      message: '欢迎进入！',
     })
   } catch (error) {
-    state.loading = false;
+    loading.value = false
     ElNotification({
       type: 'error',
-      message: (error as Error).message
+      message: (error as Error).message,
     })
-
   }
-
 }
+
+
 
 </script>
 <style scoped lang="scss">
@@ -78,7 +102,6 @@ const handleSubmit = async () => {
   height: 100vh;
   background: url('@/assets/login.svg');
   background-size: cover;
-
 }
 
 .login_form {

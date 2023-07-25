@@ -14,7 +14,6 @@ import router from './router'
 
 import pinia from './store'
 
-
 const app = createApp(App)
 
 app.use(ElementPlus, {
